@@ -29,7 +29,7 @@
   transition: transform 0.3s ease-in-out;
 }
 .hero-image-container:hover {
-  transform: scale(1.2); /* Pop-out effect */
+  transform: scale(1.3); /* Pop-out effect */
 }
 
 .hero-image {
@@ -37,6 +37,78 @@
   height: 100%;
   object-fit: cover;
 }
+
+.hero-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+/* Floating Object (Moves Around Hero Image) */
+.floating-object {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+}
+
+/* Floating Object Text */
+.floating-object p {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 5px;
+}
+
+/* Floating Object Image */
+.floating-object img {
+  width: 50px;
+  height: 50px;
+}
+
+/* Pop-up Modal Styling */
+.popup-modal {
+  display: none; /* Hidden initially */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1000;
+}
+
+/* Pop-up Image */
+.popup-content img {
+  width: 800px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+/* Close Button */
+.close-popup {
+  background: red;
+  color: white;
+  font-size: 18px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
 
 
 /* Ribbon Image */
@@ -63,7 +135,12 @@
   width: 450px; 
   height: auto;
   z-index: 3;
+  opacity: 1;
 }
+.bouquet {
+  display: block !important;
+}
+
 
 /* .bouquet {
   border: 2px solid red;
@@ -80,6 +157,108 @@
   right: 7%;
   bottom: 15%;
   transform: rotate(17deg);
+}
+
+/* Parent Section - Height Matches Image */
+#decision-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  gap: 40px;
+  height: auto;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Button Containers - Each button stays within its div */
+.decision-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px; /* Set a fixed width */
+  height: 100px; /* Set a fixed height */
+  position: relative; /* Ensures no absolute positioning for movement */
+}
+
+
+/* Image Styling with Hover Zoom Effect */
+.decision-image {
+  width: 350px; /* Adjust as needed */
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Image Zooms in when hovered */
+.decision-image:hover {
+  transform: scale(1.1);
+}
+
+/* Button Styling */
+button {
+  padding: 15px 35px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+}
+
+.yes-btn,
+.no-btn {
+  flex: 1; /* Takes up equal space */
+  height: 100%; /* Full height of the section */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+/* Yes Button - Green */
+.yes-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* No Button - Red */
+.no-btn {
+  background-color: #f44336;
+  color: white;
+  position: relative;
+}
+
+/* Button Hover Effects */
+.yes-btn:hover {
+  transform: scale(1.2);
+  background-color: #45a049;
+}
+
+.no-btn:hover {
+  transform: scale(1.2);
+  background-color: #d32f2f;
+  animation: moveUpDown 0.3s ease-in-out;
+}
+
+/* Change Background Color Based on Hover */
+.decision-section:hover .yes-btn:hover ~ .decision-section {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.decision-section:hover .no-btn:hover ~ .decision-section {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+@keyframes moveUpDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(10px); }
 }
 
 /* Button Styling */
