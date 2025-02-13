@@ -207,10 +207,18 @@ button {
   transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
 }
 
+.decision-btn-container {
+  width: 200px; /* Adjust the size */
+  height: 100px; /* Adjust the size */
+  position: relative;
+}
+
 .yes-btn,
 .no-btn {
+  position: absolute;
   flex: 1; /* Takes up equal space */
   height: 100%; /* Full height of the section */
+  width: 100%; /* Full width of the section */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -238,13 +246,56 @@ button {
 .yes-btn:hover {
   transform: scale(1.2);
   background-color: #45a049;
+  color: black !important; 
+  border: 4px solid black !important;
 }
 
 .no-btn:hover {
   transform: scale(1.2);
   background-color: #d32f2f;
-  animation: moveUpDown 0.3s ease-in-out;
+  color: black !important; 
+  border: 4px solid black !important;
 }
+
+/* Centered Fullscreen Video Popup */
+.popup-video {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Video Content */
+.popup-content {
+  position: relative;
+  background: black;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.popup-content video {
+  width: 600px; /* Adjust video size */
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 25px;
+  color: white;
+  cursor: pointer;
+}
+
 
 /* Change Background Color Based on Hover */
 .decision-section:hover .yes-btn:hover ~ .decision-section {
@@ -255,10 +306,171 @@ button {
   background: rgba(244, 67, 54, 0.1);
 }
 
-@keyframes moveUpDown {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(10px); }
+.heart-animation {
+  position: absolute;
+  font-size: 24px;
+  color: red;
+  top: 50%;
+  left: 50%;
+}
+
+
+/* Video Section Layout */
+#video-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+  flex-wrap: wrap; /* Makes it responsive */
+}
+
+/* Video Container */
+.video-container {
+  position: relative;
+  width: 300px; /* Adjust size */
+  height: 200px;
+  overflow: hidden;
+}
+
+/* The Actual Video */
+.video-container video {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Bubbly Border Effect */
+.video-container::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: black;
+  border-radius: 50px;
+  z-index: -1;
+  filter: blur(10px); /* Soft blurry bubbly effect */
+}
+
+/* Animated Glow Effect */
+.video-container:hover::before {
+  animation: bubbleEffect 1.5s infinite alternate ease-in-out;
+}
+
+/* Bubbly Animation */
+@keyframes bubbleEffect {
+  0% {
+      border-radius: 50px;
+      transform: scale(1);
+  }
+  100% {
+      border-radius: 60px;
+      transform: scale(1.05);
+  }
+}
+
+
+
+/* Full-Page Section */
+#qualities-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150vh;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4); /* Soft pastel background */
+}
+
+/* Section Title */
+.section-title {
+  font-size: 70px;
+  font-family: 'Pacifico', cursive; /* Cool romantic font */
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  margin-bottom: 30px;
+  
+}
+
+/* Grid Layout for Cards (3 per row) */
+.qualities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  gap: 60px;
+  padding: 20px;
+}
+
+/* Quality Cards */
+.quality-card {
+  width: 300px;
+  height: 200px;
+  perspective: 1000px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Hover Effect - Expand & Glow */
+.quality-card:hover {
+  transform: scale(1.2);
+}
+
+/* Stronger Shadow Effect */
+.quality-card:hover .card-front {
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Flip Animation */
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Front Side */
+.card-front {
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Back Side (Video) */
+.card-back {
+  background: black;
+  transform: rotateY(180deg);
+}
+
+/* Flip Effect */
+.quality-card.flipped .card-front {
+  transform: rotateY(180deg);
+}
+
+.quality-card.flipped .card-back {
+  transform: rotateY(0);
+}
+
+/* Video Styling */
+.card-back video {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+}
+.card-back img {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  object-fit: cover;
 }
 
 /* Button Styling */
@@ -274,6 +486,188 @@ button {
   transform: scale(1.1);
   box-shadow: 0px 0px 15px rgba(255, 111, 97, 0.8);
 }
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .qualities-grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 per row on smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .qualities-grid {
+      grid-template-columns: repeat(1, 1fr); /* 1 per row on mobile */
+  }
+}
+
+/* Full-Page Quiz Section */
+#quiz-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+}
+
+/* Quiz Container */
+.quiz-container {
+  position: relative;
+  width: 600px;
+  height: 300px;
+  perspective: 1000px;
+}
+
+/* Quiz Cards */
+.quiz-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease-in-out;
+}
+
+/* Ensure Only the First Question is Visible */
+.quiz-card:not(:first-child) {
+  display: none;
+}
+
+/* Question & Options Styling */
+.quiz-front {
+  padding: 50px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.options {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.options li {
+  background: white;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  border: 3px solid black; 
+}
+
+/* Question Section (Black Background) */
+.quiz-front h2 {
+  background: black;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+}
+
+.quiz-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  margin-bottom: 20px; /* Adds space between title & quiz */
+}
+
+/* Options Grid (2x2 Layout) */
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 options per row */
+  gap: 10px;
+  width: 100%;
+  margin-top: 15px;
+}
+/* Correct Answer */
+.correct {
+  background: #4CAF50 !important;
+  color: white;
+}
+
+/* Wrong Answer */
+.wrong {
+  background: #f44336 !important;
+  color: white;
+}
+
+/* Popup Modal */
+#popup-modal-quiz {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+/* Popup Content */
+.popup-content-quiz img {
+  width: 400px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+#close-popup {
+  background: black;
+  color: white;
+  font-size: 18px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Footer Styling */
+#site-footer {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  background: black;
+  color: white;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Pacifico', cursive; /* Handwritten-style font */
+  letter-spacing: 1px;
+}
+
+/* Glowing Hover Effect */
+#site-footer p {
+  transition: text-shadow 0.3s ease-in-out;
+}
+
+#site-footer p:hover {
+  text-shadow: 0px 0px 10px rgba(255, 182, 193, 0.8); /* Soft pink glow */
+  cursor: pointer;
+}
+
+/* Quote Styling */
+.footer-quote {
+  font-size: 40px;
+  font-style: arial;
+  opacity: 0.8;
+  margin-top: 5px;
+}
+
+
+
 
 /* Particles.js Background */
 #particles-js {

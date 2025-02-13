@@ -93,34 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-  const textElement = document.getElementById("typing-effect");
-    const textArray = ["Bollywood Love", "Puppies & Happiness", "Lilac Dreams"];
-    let index = 0;
-    let charIndex = 0;
-    
-    function typeText() {
-      if (charIndex < textArray[index].length) {
-        textElement.innerHTML += textArray[index].charAt(charIndex);
-        charIndex++;
-        setTimeout(typeText, 150);
-      } else {
-        setTimeout(eraseText, 1000);
-      }
-    }
-  
-    function eraseText() {
-      if (charIndex > 0) {
-        textElement.innerHTML = textArray[index].substring(0, charIndex - 1);
-        charIndex--;
-        setTimeout(eraseText, 100);
-      } else {
-        index = (index + 1) % textArray.length;
-        setTimeout(typeText, 500);
-      }
-    }
-  
-    typeText();
-
     function createFallingRose() {
         const rose = document.createElement("img");
         const roseImages = ["images/rose.png", "images/rose.png", "images/rose.png"];
@@ -171,37 +143,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
   
     document.addEventListener("DOMContentLoaded", function () {
-      // ✅ Funny No Button Moves Away
-      const noButton = document.querySelector(".no-btn");
-  
-      noButton.addEventListener("mouseenter", function () {
-        let randomOffset = Math.random() < 0.5 ? -10 : 10; // Moves up or down
-        noButton.style.transform = `translateY(${randomOffset}px)`;
-    });
 
-    noButton.addEventListener("mouseleave", function () {
-        noButton.style.transform = "translateY(0)"; // Resets position
-    });
   
-      // ✅ Cute Puppy Animation on Yes Click
       document.querySelector(".yes-btn").addEventListener("click", function () {
-          const puppyImg = document.createElement("img");
-          puppyImg.src = "images/puppy.png";
-          puppyImg.className = "puppy-animation";
-          document.body.appendChild(puppyImg);
-  
-          gsap.fromTo(puppyImg, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1, ease: "bounce" });
-  
-          setTimeout(() => {
-              puppyImg.remove();
-          }, 4000);
-      });
-  
-      // ✅ Love Meter Fills Up on Yes Button Hover
-      document.querySelector(".yes-btn").addEventListener("mouseover", function () {
-          document.querySelector(".love-bar").style.width = "100%";
-      });
-  
+        const yesButton = this;
+        
+        // Hide the button
+        gsap.to(yesButton, {
+            scale: 0,
+            opacity: 0,
+            duration: 0.3,
+            onComplete: () => yesButton.remove()
+        });
+        // Position the heart near the clicked button
+        let buttonRect = event.target.getBoundingClientRect();
+        heart.style.left = `${buttonRect.left + buttonRect.width / 2}px`;
+        heart.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
+    
+        // Create Hearts
+        for (let i = 0; i < 10; i++) {
+            let heart = document.createElement("div");
+            heart.src = "images/heart.png";
+            heart.className = "heart-animation";
+            document.body.appendChild(heart);
+    
+            gsap.to(heart, {
+                x: Math.random() * 200 - 100,
+                y: Math.random() * -200 - 50,
+                opacity: 0,
+                scale: Math.random() * 1.5 + 0.5,
+                duration: 1.5,
+                ease: "power1.out",
+                onComplete: () => heart.remove()
+            });
+        }
+    });
+    
   
       // ✅ GSAP Parallax Effect
       gsap.to(".parallax", {
@@ -315,6 +292,128 @@ document.addEventListener("DOMContentLoaded", function () {
       popupModal.style.display = "none";
   });
 });
+
+
+document.querySelectorAll(".quality-card").forEach(card => {
+  card.addEventListener("click", function () {
+      this.classList.toggle("flipped");
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const questions = document.querySelectorAll(".quiz-card");
+  let currentQuestionIndex = 0;
+  
+  const popupModal = document.getElementById("popup-modal-quiz");
+  const popupGif = document.getElementById("popup-gif");
+  const popupText = document.getElementById("popup-text");
+  const closePopup = document.getElementById("close-popup");
+
+  // Store correct & wrong GIFs for each question
+  const correctGifs = [
+    "images/quiz1.jpg",  // For Question 1
+    "images/pie.jpg",  // For Question 2
+    "images/quiz2.jpg"   // For Question 3
+];
+
+const wrongGifs = [
+    "images/rakhi-sawant.gif",  // For Question 1
+    "images/rakhi-sawant.gif",  // For Question 2
+    "images/rakhi-sawant.gif"   // For Question 3
+];
+
+document.querySelectorAll(".options li").forEach(option => {
+    option.addEventListener("click", function () {
+        const isCorrect = this.getAttribute("data-correct") === "true";
+
+        if (isCorrect) {
+            this.classList.add("correct");
+            popupGif.src = correctGifs[currentQuestionIndex]; // Show the correct GIF for this question
+            popupText.innerText = "Yay! You got it right! 🎉";
+        } else {
+            this.classList.add("wrong");
+            popupGif.src = wrongGifs[currentQuestionIndex]; // Show the wrong GIF for this question
+            popupText.innerText = "Oops! Try again next time. 😅";
+        }
+
+        popupModal.style.display = "block";
+    });
+});
+
+  // Close popup and move to the next question
+  closePopup.addEventListener("click", function () {
+      popupModal.style.display = "none";
+
+      // Flip to the next question
+      gsap.to(questions[currentQuestionIndex], {
+          rotationY: 180,
+          duration: 0.8,
+          ease: "power2.out",
+          onComplete: () => {
+              // Hide current question
+              questions[currentQuestionIndex].style.display = "none";
+              currentQuestionIndex++;
+
+              // Show next question if available
+              if (currentQuestionIndex < questions.length) {
+                  questions[currentQuestionIndex].style.display = "flex";
+                  gsap.fromTo(questions[currentQuestionIndex], { rotationY: -180 }, { rotationY: 0, duration: 0.8 });
+              } else {
+                  alert("🎉 Quiz Complete! You know me so well! ❤️");
+              }
+          }
+      });
+  });
+});
+
+document.querySelector(".yes-btn").addEventListener("click", function () {
+  let popup = document.getElementById("yes-popup");
+  let video = document.getElementById("yes-video");
+
+  popup.style.display = "flex";  // Show popup
+  video.play(); // Play video when popup opens
+});
+
+document.querySelector(".no-btn").addEventListener("click", function () {
+  let popup = document.getElementById("no-popup");
+  let video = document.getElementById("no-video");
+
+  popup.style.display = "flex";  // Show popup
+  video.play(); // Play video when popup opens
+});
+
+// Function to Close Popups and Stop Video
+function closePopup(popupId) {
+  let popup = document.getElementById(popupId);
+  let video = popup.querySelector("video"); // Get video inside the popup
+
+  popup.style.display = "none"; // Hide popup
+  video.pause();  // Pause video
+  video.currentTime = 0; // Reset video to start
+}
+
+// Close popup if clicked outside the video
+document.querySelectorAll(".popup-video").forEach(popup => {
+  popup.addEventListener("click", function (event) {
+      if (event.target === this) {
+          closePopup(this.id);
+      }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const bgMusic = document.getElementById("bg-music");
+
+  function playMusic() {
+      bgMusic.play();
+      document.removeEventListener("click", playMusic); // Remove event after first click
+  }
+
+  document.addEventListener("click", playMusic); // Start music on first click
+});
+
+
 
 
 
